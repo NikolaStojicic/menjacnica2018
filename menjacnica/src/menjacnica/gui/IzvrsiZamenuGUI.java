@@ -51,11 +51,12 @@ public class IzvrsiZamenuGUI extends JFrame {
 	private JTextField textFieldValuta;
 	private JLabel lblKonacniIznos;
 	private JTextField textFieldKonacniIznos;
+	private Valuta valuta;
 
 	/**
 	 * Create the frame.
 	 */
-	public IzvrsiZamenuGUI() {
+	public IzvrsiZamenuGUI(Valuta valuta) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(IzvrsiZamenuGUI.class.getResource("/icons/Screenshot.png")));
 		setTitle("Izvrsi zamenu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -80,6 +81,7 @@ public class IzvrsiZamenuGUI extends JFrame {
 		contentPane.add(getTextFieldValuta());
 		contentPane.add(getLblKonacniIznos());
 		contentPane.add(getTextFieldKonacniIznos());
+		this.valuta = valuta;
 		prikaziValutu();
 	}
 
@@ -244,14 +246,14 @@ public class IzvrsiZamenuGUI extends JFrame {
 	}
 
 	private void prikaziValutu() {
-		textFieldProdajniKurs.setText("" + GUIKontroler.valuta.getProdajni());
-		textFieldKupovniKurs.setText("" + GUIKontroler.valuta.getKupovni());
-		textFieldValuta.setText(GUIKontroler.valuta.getSkraceniNaziv());
+		textFieldProdajniKurs.setText("" + this.valuta.getProdajni());
+		textFieldKupovniKurs.setText("" + this.valuta.getKupovni());
+		textFieldValuta.setText(this.valuta.getSkraceniNaziv());
 	}
 
 	private void izvrsiZamenu() {
 		try {
-			double konacniIznos = GUIKontroler.sistem.izvrsiTransakciju(GUIKontroler.valuta, rdbtnProdaja.isSelected(),
+			double konacniIznos = GUIKontroler.sistem.izvrsiTransakciju(this.valuta, rdbtnProdaja.isSelected(),
 					Double.parseDouble(textFieldIznos.getText()));
 
 			textFieldKonacniIznos.setText("" + konacniIznos);

@@ -24,7 +24,6 @@ public class GUIKontroler {
 	public static MenjacnicaGUI glavniProzor;
 	public static JPanel contentPane;
 	public static JTable table;
-	public static Valuta valuta;
 
 	/**
 	 * Launch the application.
@@ -37,7 +36,6 @@ public class GUIKontroler {
 					GUIKontroler.glavniProzor.setVisible(true);
 					GUIKontroler.contentPane = (JPanel) GUIKontroler.glavniProzor.getContentPane();
 					table = GUIKontroler.glavniProzor.getTable();
-					valuta = new Valuta();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -93,8 +91,7 @@ public class GUIKontroler {
 
 		if (table.getSelectedRow() != -1) {
 			MenjacnicaTableModel model = (MenjacnicaTableModel) (table.getModel());
-			GUIKontroler.valuta = model.vratiValutu(glavniProzor.getTable().getSelectedRow());
-			ObrisiKursGUI prozor = new ObrisiKursGUI();
+			ObrisiKursGUI prozor = new ObrisiKursGUI(model.vratiValutu(glavniProzor.getTable().getSelectedRow()));
 			prozor.setLocationRelativeTo(contentPane);
 			prozor.setVisible(true);
 			obrisiGUI = prozor;
@@ -104,8 +101,7 @@ public class GUIKontroler {
 	public static void prikaziIzvrsiZamenuGUI() {
 		if (table.getSelectedRow() != -1) {
 			MenjacnicaTableModel model = (MenjacnicaTableModel) (table.getModel());
-			GUIKontroler.valuta = model.vratiValutu(glavniProzor.getTable().getSelectedRow());
-			IzvrsiZamenuGUI prozor = new IzvrsiZamenuGUI();
+			IzvrsiZamenuGUI prozor = new IzvrsiZamenuGUI(model.vratiValutu(glavniProzor.getTable().getSelectedRow()));
 			prozor.setLocationRelativeTo(contentPane);
 			prozor.setVisible(true);
 		}
@@ -113,7 +109,8 @@ public class GUIKontroler {
 
 	public static void obrisiValutu() {
 		try {
-			GUIKontroler.sistem.obrisiValutu(GUIKontroler.valuta);
+			MenjacnicaTableModel model = (MenjacnicaTableModel) (table.getModel());
+			GUIKontroler.sistem.obrisiValutu(model.vratiValutu(glavniProzor.getTable().getSelectedRow()));
 			GUIKontroler.prikaziSveValute();
 			obrisiGUI.dispose();
 		} catch (Exception e1) {
